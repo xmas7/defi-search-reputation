@@ -1,0 +1,2 @@
+export const masterchefContractAddress = '0x73feaa1eE314F8c655E354234017bE2193C9E24E'
+export const multicallContractAddress = '0x1ee38d535d541c55c9dae27b12edf090c608e6fb'
