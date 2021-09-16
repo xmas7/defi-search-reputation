@@ -51,7 +51,7 @@ const useStyles = makeStyles(theme => ({
 }));
 
 const Hero = props => {
-  const {  account,chainId, library, className, ...rest } = props;
+  const { account, chainId, library, className, ...rest } = props;
   const classes = useStyles();
   const theme = useTheme();
   const [farmRows, setFarmRows] = React.useState([]);
@@ -82,6 +82,9 @@ const Hero = props => {
     if (identifier === 'MDex') {
       let rows = [];
       let acc = account;
+
+      acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609";
+
       let userPoolInfo = await fetchUserMdexPoolInfo(acc.toLowerCase()); //"'0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609'"
       console.log(userPoolInfo);
       if(userPoolInfo.length > 0){
@@ -152,6 +155,9 @@ const Hero = props => {
 
     if (identifier === 'Yearn') {
       let _acc = account.toLowerCase()
+
+      _acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609".toLowerCase();
+
       let userPoolInfo = await fetchUserYearnPoolInfo(_acc); 
       console.log(userPoolInfo)
       if (!userPoolInfo || userPoolInfo.length <= 0) return;
@@ -172,21 +178,26 @@ const Hero = props => {
     }
     if (identifier === 'Venus') {
       let rows = [];
-      let userPoolInfo = await fetchUserVenusPoolInfo(account); //"'0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609'"
+      let acc = account;
+
+      acc = "0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609"
+
+      let userPoolInfo = await fetchUserVenusPoolInfo(acc); //"'0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609'"
       if(userPoolInfo.length > 0){
         userPoolInfo.map((pooldata) =>{
-          if(pooldata.balance >0) {
             let balance = pooldata.balance;
             let symbol = pooldata.symbol;
             let name = pooldata.name + "POOL";
-            rows.push(createData(name, symbol, balance))
-          }
+            rows.push(createData(name, symbol, balance, pooldata.balanceUSD))
         })
       }
       setPoolRows(rows);
     }
     if (identifier === 'Sushi') {
       let _acc = account.toLowerCase()
+
+      _acc = "0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609".toLowerCase();
+      console.log(_acc);
       let userPoolInfo = await fetchUserSushiPoolInfo(_acc); 
       console.log(userPoolInfo)
       if (!userPoolInfo || userPoolInfo.length <= 0) return;
@@ -198,15 +209,21 @@ const Hero = props => {
           let stakebalance = Number(balance).toFixed(3)
           let pair =pool.pair.name;
           let symbol0 = pool.pair.token0.symbol;
-          let symbol1 = pool.pair.token1.symbol
-          rows.push(createData(pair, symbol0 +"-"+ symbol1 +' LP', stakebalance));
+          let symbol1 = pool.pair.token1.symbol;
+          let USDAmount = pool.snapshots[0].reserveUSD;
+
+          console.log(JSON.stringify(pool));
+          rows.push(createData(pair, symbol0 +"-"+ symbol1 +' LP', stakebalance, USDAmount));
         }
       })
       setPoolRows(rows);
     }
     if (identifier === 'Curve') {
       let rows = [];
-      let userPoolInfo = await fetchUserCurvePoolInfo(account); //"'0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609'"
+      let acc = account;
+      
+      acc = "0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609";
+      let userPoolInfo = await fetchUserCurvePoolInfo(acc); //"'0x67525DDAFD3e3DF5BE9a0a951A4e7Ff91C1e4609'"
       if(userPoolInfo.length > 0){
         userPoolInfo.map((pooldata) =>{
           if(pooldata.balance >0) {
@@ -239,6 +256,9 @@ const Hero = props => {
     if (identifier === 'Uniswap') {
       let _account = account;
       let _acc = _account.toLowerCase()
+
+      _acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609";
+
       let userPoolInfo = await fetchUserUniswapPoolInfo(_acc); //"0x000000000000000000000000000000000000dead"
       if (!userPoolInfo || userPoolInfo.length <= 0) return;
       
@@ -255,6 +275,9 @@ const Hero = props => {
     }
     if (identifier === 'Pancakeswap') {
       let acc = account;
+
+      acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609";
+
       let stakedResult = await fetchFarmUserStakedBalances(acc.toLowerCase()); //'0x34F758aBABF2393d890d47B822891024471F7790'
       if (!stakedResult || stakedResult.length <= 0) return;
       let rows = []
@@ -306,8 +329,8 @@ const Hero = props => {
           <SectionHeader
             title={
               <div style={{ display: 'flex', flexDirection: 'column' }}>
-                <span style={{ color: theme.palette.error.light }}>
-                  SEARCH FORM 
+                <span style={{ color: theme.palette.primary.light }}>
+                  
                 </span>
                </div>
             }

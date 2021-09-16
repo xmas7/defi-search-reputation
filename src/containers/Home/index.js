@@ -20,7 +20,7 @@ const useStyles = makeStyles(theme => ({
     width: '100%',
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundImage: 'url(/assets/images/homeBackground.jpg)'
+    //backgroundImage: 'url(/assets/images/homeBackground.jpg)'
   },
 }));
 

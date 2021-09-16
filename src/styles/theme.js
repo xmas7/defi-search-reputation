@@ -23,8 +23,8 @@ const theme = responsiveFontSizes(createMuiTheme({
       contrastText: '#fff'
     },
     background: {
-      default: '#151C29',
-      main: '#232637',
+      default: '#c1c1c1',
+      main: '#919191',
       sideDrawer: '#0f1118',
       selectedMenu: '#292C4130',
       // main: '#232637',

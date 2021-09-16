@@ -19,6 +19,9 @@ export const getUserPools = async (id) => {
                   symbol
                 }
               }
+              snapshots {
+                reserveUSD
+              }
             }
           }
         }
