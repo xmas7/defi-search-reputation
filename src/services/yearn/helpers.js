@@ -12,7 +12,12 @@ export const getUserPools = async (id) => {
                name
                decimals
             }
-             balanceTokens
+            balanceTokens
+            vault {
+              vaultDayData {
+                tokenPriceUSDC
+              }
+            }
           }
         }
     `,

@@ -10,6 +10,9 @@ export const getUserPools = async (id) => {
             vaults{
               collateralType{
                 id
+                price {
+                  value
+                }
               }
               collateral
               debt

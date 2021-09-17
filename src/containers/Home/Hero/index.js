@@ -23,6 +23,7 @@ import { fetchUserMdexPoolInfo } from 'services/mdex';
 import { useSnackbar } from 'notistack';
 import farmsConfig from 'constants/farms'
 import poolsConfig from 'constants/pools'
+import tokensConfig from 'constants/tokens'
 import BigNumber from 'bignumber.js'
 import { getBalanceNumber } from 'utils/formatBalanceNumber'
 import CoinMarketCapAPI from 'coinmarketcap-api'
@@ -102,6 +103,9 @@ const Hero = props => {
 
     if (identifier === 'Balancer') {
       let acc = account; // 0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609
+
+      acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609".toLowerCase();
+
       let userPoolInfo = await fetchUserBalancerPoolInfo(acc.toLowerCase());
       let rows = []
       if(userPoolInfo.length > 0){
@@ -119,6 +123,9 @@ const Hero = props => {
     if (identifier === 'Insta') {
       let _account = account;
       let _acc = _account.toLowerCase()
+
+      _acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609".toLowerCase();
+
       let userPoolInfo = await fetchUserInstaPoolInfo(_acc);
       if (!userPoolInfo || userPoolInfo.length <= 0) return;
       let rows = []
@@ -127,7 +134,8 @@ const Hero = props => {
           let name = pool.name;
           let balance = pool.balance;
           let symbol = pool.symbol;
-          rows.push(createData(name, symbol, balance));
+          let amountUSD = pool.amountUSD;
+          rows.push(createData(name, symbol, balance, amountUSD));
         }
       })
       setPoolRows(rows);
@@ -135,6 +143,9 @@ const Hero = props => {
 
     if (identifier === 'maker') {
       let _acc = account.toLowerCase()
+
+      _acc = "0x67525ddafd3e3df5be9a0a951a4e7ff91c1e4609".toLowerCase();
+
       let userPoolInfo = await fetchUserMakerPoolInfo(_acc); 
       console.log(userPoolInfo)
       if (!userPoolInfo || userPoolInfo.length <= 0) return;
@@ -145,7 +156,6 @@ const Hero = props => {
       vaults.map((pool, index) => {
         if (pool.collateral > 0) {
           let balance = pool.collateral;
-          
           let symbol = pool.collateralType.id;
           rows.push(createData(symbol + "Pool",  symbol, balance));
         }
@@ -168,10 +178,19 @@ const Hero = props => {
           let decimals = token.decimals;
           let balance = pool.balanceTokens;
           let stakebalance = getBalanceNumber(balance, decimals);
+          let vaultDayData = pool.vault.vaultDayData;
           
+          let amountUSD = 0;
+          if (vaultDayData.length > 0)
+            amountUSD = vaultDayData[vaultDayData.length - 1].tokenPriceUSDC;
+          
+          amountUSD = new BigNumber(amountUSD).div(
+            new BigNumber(10).pow(tokensConfig.usdc.decimals)
+          ).multipliedBy(stakebalance);
+
           let name = token.name;
           let symbol = token.symbol
-          rows.push(createData(name,  symbol, stakebalance.toFixed(3)));
+          rows.push(createData(name,  symbol, stakebalance.toFixed(3), amountUSD.toString()));
         }
       })
       setPoolRows(rows);

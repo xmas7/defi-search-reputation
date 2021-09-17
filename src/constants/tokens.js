@@ -738,7 +738,7 @@ const tokens = {
       56: '0x8AC76a51cc950d9822D68b83fE1Ad97B32Cd580d',
       97: '',
     },
-    decimals: 18,
+    decimals: 6,
     projectLink: 'https://www.centre.io/usdc',
   },
   dai: {

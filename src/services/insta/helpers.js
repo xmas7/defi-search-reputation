@@ -24,13 +24,16 @@ const getInstaPools = async(address) => {
   let api_url = "https://api.instadapp.io/defi/guniswap/v3/position?user=" + address;
   let res = await fetch(api_url);
   let result = await res.json();
+  console.log("result=", result);
   for(let j = 0; j < result.length; j ++) {
     let stakingInsta = {
       "symbol" : result[j].tokenA.symbol + "-" + result[j].tokenB.symbol,
       "name" : result[j].tokenA.symbol + "-" + result[j].tokenB.symbol + " Insta",
-      "balance" : result[j].stakedPoolTokenBalance
+      "balance" : result[j].stakedPoolTokenBalance,
+      "amountUSD" : result[j].userPositionInUsd
     };
     stakingInfo.push(stakingInsta);
   }
   return stakingInfo;
 }
+
