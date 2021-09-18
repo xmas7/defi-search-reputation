@@ -94,7 +94,8 @@ const Hero = props => {
             let balance = pooldata.balance;
             let symbol = pooldata.symbol;
             let name = pooldata.name;
-            rows.push(createData(name, symbol, web3.utils.fromWei(balance,'ether')))
+            let amountUSD = pooldata.amountUSD;
+            rows.push(createData(name, symbol, web3.utils.fromWei(balance,'ether'), amountUSD))
           }
         })
       }
@@ -157,7 +158,9 @@ const Hero = props => {
         if (pool.collateral > 0) {
           let balance = pool.collateral;
           let symbol = pool.collateralType.id;
-          rows.push(createData(symbol + "Pool",  symbol, balance));
+          let unitPrice = pool.collateralType.price.value;
+          let amountUSD = new BigNumber(unitPrice).multipliedBy(balance);
+          rows.push(createData(symbol + "Pool",  symbol, balance, amountUSD));
         }
       })
       setPoolRows(rows);
