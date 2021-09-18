@@ -26,6 +26,7 @@ export const getUserPools = async (acc) => {
           let lp_address = lpAddresses[i][0];
           let lpContract = new web3.eth.Contract(config.mdexLPTokenABI, lp_address);
           console.log(lp_address);
+          
           let token0Address = await lpContract.methods.token0().call();
           let token1Address = await lpContract.methods.token1().call();
           let poolReserved = await lpContract.methods.getReserves().call();
@@ -44,8 +45,10 @@ export const getUserPools = async (acc) => {
 
           let token0Contract = new web3.eth.Contract(config.erc20ABI, token0Address);
           let token0Symbol = await token0Contract.methods.symbol().call();
+          
           let token1Contract = new web3.eth.Contract(config.erc20ABI, token1Address);
           let token1Symbol = await token1Contract.methods.symbol().call();
+          
           let pool_info = {
             name: token0Symbol + "/" + token1Symbol + " Pool",
             symbol: token0Symbol + "/" + token1Symbol,
