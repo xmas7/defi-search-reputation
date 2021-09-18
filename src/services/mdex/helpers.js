@@ -31,9 +31,7 @@ export const getUserPools = async (acc) => {
           let poolReserved = await lpContract.methods.getReserves().call();
           let poolTotalSupply = await lpContract.methods.totalSupply().call();
           let lpTokenDecimals = await lpContract.methods.decimals().call();
- 
           let token0price = await fetchTokenPrice(token0Address.toLowerCase());
-
           let token0priceBigNumber = new BigNumber(token0price[0].derivedUSD);
           let reserve0BigNumber = new BigNumber(poolReserved._reserve0);
           let totalSupplyBigNumber = new BigNumber(poolTotalSupply);
